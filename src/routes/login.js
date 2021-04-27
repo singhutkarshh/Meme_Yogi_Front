@@ -1,14 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
+  const { loginWithRedirect } = useAuth0();
   return (
     <Wrapper>
       <div>
         <img src="./logo.png" />
         <h2>Welcome to Meme Yogi </h2>
         <h3>A Place to Share Memes and Laughs !</h3>
-        <button> Login </button>
+        <button onClick={loginWithRedirect}> Login / SignUp </button>
       </div>
     </Wrapper>
   );
@@ -27,6 +29,7 @@ const Wrapper = styled.section`
     flex-direction:column;
     justify-content:center;
     align-items:center;
+    margin-top:5rem;
   }
   img {
     width:20rem: ;
@@ -45,7 +48,7 @@ const Wrapper = styled.section`
       padding:5px 15px;
       background-color:#bd7946;
       color:white;
-      font-size:20px;
+      font-size:16px;
       margin-top:2rem;
   }
   button:hover{

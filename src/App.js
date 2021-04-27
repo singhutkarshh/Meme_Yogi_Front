@@ -1,4 +1,3 @@
-import "./App.css";
 import Home from "./routes/home";
 import styled from "styled-components";
 import Navigation from "./components/Navigation";
@@ -7,41 +6,45 @@ import Notifications from "./routes/Notifications";
 import Messages from "./routes/messages";
 import Error from "./routes/Error";
 import Login from "./routes/login";
+import PrivateRoute from "./routes/PrivateRoute";
+import AuthWrapper from "./routes/AuthWrapper";
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact>
-          <Wrapper>
-            <Navigation />
-            <Home />
-          </Wrapper>
-        </Route>
+    <AuthWrapper>
+      <Router>
+        <Switch>
+          <Route path="/login" exact>
+            <Login />
+          </Route>
 
-        <Route path="/login" exact>
-          <Login />
-        </Route>
+          <PrivateRoute path="/" exact>
+            <Wrapper>
+              <Navigation />
+              <Home />
+            </Wrapper>
+          </PrivateRoute>
 
-        <Route path="/notifications" exact>
-          <Wrapper>
-            <Navigation />
-            <Notifications />
-          </Wrapper>
-        </Route>
+          <PrivateRoute path="/notifications" exact>
+            <Wrapper>
+              <Navigation />
+              <Notifications />
+            </Wrapper>
+          </PrivateRoute>
 
-        <Route path="/messages" exact>
-          <Wrapper>
-            <Navigation />
-            <Messages />
-          </Wrapper>
-        </Route>
+          <PrivateRoute path="/messages" exact>
+            <Wrapper>
+              <Navigation />
+              <Messages />
+            </Wrapper>
+          </PrivateRoute>
 
-        <Route path="*" exact>
-          <Error />
-        </Route>
-      </Switch>
-    </Router>
+          <PrivateRoute path="*" exact>
+            <Error />
+          </PrivateRoute>
+        </Switch>
+      </Router>
+    </AuthWrapper>
   );
 }
 

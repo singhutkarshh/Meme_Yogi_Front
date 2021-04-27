@@ -6,11 +6,12 @@ import MessageIcon from "@material-ui/icons/Message";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Navigation = () => {
   return (
     <Wrapper>
-      <div style={{ marginLeft: "10rem" }}>
+      <div style={{ marginLeft: "10rem", borderRight: "2px solid grey" }}>
         <Header />
         <NavBox />
       </div>
@@ -29,6 +30,15 @@ const Header = () => {
 };
 
 const NavBox = () => {
+  const {
+    loginWithRedirect,
+    logout,
+    user,
+    isAuthenticated,
+    isLoading,
+  } = useAuth0();
+  const isUser = isAuthenticated && user;
+
   return (
     <>
       <Link to="/" style={{ textDecoration: "none" }}>
@@ -37,34 +47,41 @@ const NavBox = () => {
           <HomeIcon className="icon" />
         </button>
       </Link>
+      <hr></hr>
 
       <Link to="/notifications" style={{ textDecoration: "none" }}>
-        <button className="navItems" style={{}}>
+        <button className="navItems">
           Notifications
           <NotificationsIcon className="icon" />
         </button>
       </Link>
+      <hr></hr>
 
       <Link to="/messages" style={{ textDecoration: "none" }}>
-        <button className="navItems" style={{}}>
+        <button className="navItems">
           Messages
           <MessageIcon className="icon" />
         </button>
       </Link>
+      <hr></hr>
 
-      <Link to="/error" style={{ textDecoration: "none" }}>
-        <button className="navItems" style={{}}>
-          Bookmark
+      {isUser ? (
+        <button
+          className="navItems"
+          onClick={() => {
+            logout({ returnTo: window.location.origin });
+          }}
+        >
+          Logout
           <BookmarkBorderIcon className="icon" />
         </button>
-      </Link>
-
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <button className="navItems" style={{}}>
-          Signout
+      ) : (
+        <button className="navItems" onClick={loginWithRedirect}>
+          Login
           <MoreHorizIcon className="icon" />
         </button>
-      </Link>
+      )}
+      <hr></hr>
     </>
   );
 };

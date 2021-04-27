@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
-
+import { useAuth0 } from "@auth0/auth0-react";
 const Wall = () => {
   return (
     <Wrapper>
@@ -20,18 +20,34 @@ const Wall = () => {
 };
 
 const Header = () => {
+  const { user, isAuthenticated } = useAuth0();
+
+  const isUser = isAuthenticated && user;
+
   return (
     <>
-      <div className="header">Home</div>
+      <div className="header">
+        <h2>Home</h2>
+        {isUser && user.name && (
+          <p>
+            Welcome , <strong> {user.name.toUpperCase()} </strong>
+          </p>
+        )}
+      </div>
     </>
   );
 };
 
 const Upload = () => {
+  const { user, isAuthenticated } = useAuth0();
+
+  const isUser = isAuthenticated && user;
   return (
     <article className="upload">
       <div className="upload_caption">
-        <Avatar alt="Remy Sharp" src="" />
+        {isUser && (
+          <Avatar alt="Remy Sharp" src={user.picture} alt={user.name} />
+        )}
         <input type="text" placeholder="Caption" />
       </div>
       <div className="upload_file">
@@ -62,19 +78,23 @@ const Wrapper = styled.section`
   padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
-  overflow:hidden;
+  overflow:scroll;
+  // position:relative;
   .header {
     width: 100%;
     border: 1px solid grey;
     border-right:none;
     flex: 0.1;
-    font-size: 24px;
     align-items: center;
     display: flex;
+    flex-dircetion:row;
+    justify-content:space-evenly;
+    align-items:center;
     padding-left: 1rem;
-    font-weight: 700;
   }
-
+  .header > p{
+    color:grey;
+  }
   .upload{
       width:100%:;
       flex:0.1;
@@ -117,7 +137,7 @@ const Wrapper = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow:scroll;
+    // overflow:scroll;
   }
 
   .posts{
